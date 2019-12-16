@@ -18,6 +18,8 @@ namespace MediaOrganiser.Service
 
         public async Task StartScan()
         {
+            MessengerService.Default.Send(new FileScanStartedMessage());
+
             var librariesToScan = _repo.SelectAllLibraries();
 
             foreach (var library in librariesToScan)

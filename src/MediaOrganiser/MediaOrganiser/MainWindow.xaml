@@ -18,7 +18,7 @@
             <Button Margin="5" Command="{Binding Path=StartScanCommand}">Scan files</Button>
         </StackPanel>
 
-        <ProgressBar DockPanel.Dock="Bottom" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />
+        <ProgressBar DockPanel.Dock="Top" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />
         
         <TabControl>
             <TabItem Header="Audio">

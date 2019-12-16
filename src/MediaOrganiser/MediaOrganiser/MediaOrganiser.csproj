@@ -88,6 +88,7 @@
     <Compile Include="Data\DataStore.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Messages\FileScanCompleteMessage.cs" />
+    <Compile Include="Messages\FileScanStartedMessage.cs" />
     <Compile Include="Model\AudioFile.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Configuration.cs" />

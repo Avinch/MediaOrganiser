@@ -13,14 +13,18 @@
 
     <DockPanel LastChildFill="True">
         <Label DockPanel.Dock="Bottom" Margin="5" Content="{Binding CountText}"></Label>
-        <!--<StackPanel Visibility="{Binding DetailsPanelVisible}" DockPanel.Dock="Left">
+        <StackPanel Width="250" Visibility="{Binding DetailsPanelVisible}" DockPanel.Dock="Right">
             <Label Content="{Binding SelectedFile.Title}"></Label>
-        </StackPanel>-->
-            <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding Files}" AutoGenerateColumns="False">
+            <Label Content="{Binding SelectedFile.Artist}"></Label>
+            <Label Content="{Binding SelectedFile.Album}"></Label>
+        </StackPanel>
+        <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding Files}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Binding="{Binding Title}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Artist" Binding="{Binding Artist}"></DataGridTextColumn>
-                </DataGrid.Columns>
+                    <DataGridTextColumn Header="Length" Binding="{Binding Length}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Artist" Binding="{Binding Artist}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Album" Binding="{Binding Album}"></DataGridTextColumn>
+            </DataGrid.Columns>
             </DataGrid>
     </DockPanel>
 

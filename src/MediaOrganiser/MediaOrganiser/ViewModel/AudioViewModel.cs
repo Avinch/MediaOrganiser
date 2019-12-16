@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows;
 using MediaOrganiser.Data;
 using MediaOrganiser.Messages;
@@ -17,10 +16,12 @@ namespace MediaOrganiser.ViewModel
             _repo = new DataRepository();
 
             MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived);
+            MessengerService.Default.Register<FileScanStartedMessage>(this, ScanStartedReceieved); // not working - messengerservice is refusing it for some reason
 
             Files = new ObservableCollection<AudioFile>();
 
             CountText = "None";
+            DetailsPanelVisible = Visibility.Collapsed;
         }
 
         private ObservableCollection<AudioFile> _files;
@@ -65,8 +66,12 @@ namespace MediaOrganiser.ViewModel
             set { _countText = value; OnPropertyChanged();}
         }
 
+        private void ScanStartedReceieved(FileScanStartedMessage obj)
+        {
+            Files.Clear();
+        }
 
-        private async void ScanCompleteReceived(FileScanCompleteMessage obj)
+        private void ScanCompleteReceived(FileScanCompleteMessage obj)
         {
             ReloadFiles();
         }
