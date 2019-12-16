@@ -86,12 +86,15 @@
     </ApplicationDefinition>
     <Compile Include="Data\DataRepository.cs" />
     <Compile Include="Data\DataStore.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Messages\FileScanCompleteMessage.cs" />
     <Compile Include="Model\AudioFile.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\MediaFile.cs" />
     <Compile Include="Model\VideoFile.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Service\FileScannerService.cs" />
     <Compile Include="Service\MessengerService.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Page Include="MainWindow.xaml">
