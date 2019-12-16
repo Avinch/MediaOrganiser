@@ -13,11 +13,13 @@
 
 <Window.DataContext><vm:MainWindowViewModel  /></Window.DataContext>
 
-    <ui:SimpleStackPanel>
-        <StackPanel  Orientation="Horizontal">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Button Margin="5" Command="{Binding Path=StartScanCommand}">Scan files</Button>
         </StackPanel>
-        <ProgressBar Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}"></ProgressBar>
+
+        <ProgressBar DockPanel.Dock="Bottom" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />
+        
         <TabControl>
             <TabItem Header="Audio">
                 <view:AudioView></view:AudioView>
@@ -30,5 +32,5 @@
             </TabItem>
         </TabControl>
 
-    </ui:SimpleStackPanel>
+    </DockPanel>
 </Window>

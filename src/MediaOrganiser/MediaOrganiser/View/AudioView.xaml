@@ -11,12 +11,17 @@
 
     <Control.DataContext><vm:AudioViewModel /></Control.DataContext>
 
-    <DockPanel>
-        <Label DockPanel.Dock="Top" Margin="5" Content="{Binding CountText}"></Label>
+    <DockPanel LastChildFill="True">
+        <Label DockPanel.Dock="Bottom" Margin="5" Content="{Binding CountText}"></Label>
         <!--<StackPanel Visibility="{Binding DetailsPanelVisible}" DockPanel.Dock="Left">
             <Label Content="{Binding SelectedFile.Title}"></Label>
         </StackPanel>-->
-        <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" VerticalAlignment="Stretch" ItemsSource="{Binding Files}"></DataGrid>
+            <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding Files}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Title}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Artist" Binding="{Binding Artist}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
     </DockPanel>
 
 </UserControl>
