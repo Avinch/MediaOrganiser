@@ -84,7 +84,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\DataRepository.cs" />
+    <Compile Include="Data\DataStore.cs" />
     <Compile Include="Model\AudioFile.cs" />
+    <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\MediaFile.cs" />
     <Compile Include="Model\VideoFile.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -131,7 +135,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

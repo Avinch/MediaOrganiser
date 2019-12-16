@@ -36,5 +36,19 @@ namespace MediaOrganiser.Model
             get { return _length; }
             set { _length = value; }
         }
+
+        private List<Category> _categories;
+
+        public List<Category> Categories
+        {
+            get { return _categories; }
+            set { _categories = value; }
+        }
+
+        public void AddCategory(Category category)
+        {
+            Categories.Add(category);
+        }
+
     }
 }
