@@ -55,6 +55,9 @@
     <Reference Include="ModernWpf.Controls, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ModernWpfUI.0.7.0\lib\net45\ModernWpf.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -92,11 +95,16 @@
     <Compile Include="Model\AudioFile.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Configuration.cs" />
+    <Compile Include="Model\DataEnums.cs" />
     <Compile Include="Model\MediaFile.cs" />
+    <Compile Include="Model\Playlist.cs" />
+    <Compile Include="Model\PlaylistDto.cs" />
     <Compile Include="Model\VideoFile.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\FileScannerService.cs" />
     <Compile Include="Service\MessengerService.cs" />
+    <Compile Include="Service\PlaylistService.cs" />
+    <Compile Include="Service\SettingsService.cs" />
     <Compile Include="ViewModel\AudioViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />

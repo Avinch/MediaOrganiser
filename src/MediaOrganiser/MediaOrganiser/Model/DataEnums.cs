@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace MediaOrganiser.Model
 {
-    public class VideoFile : MediaFile
+    public static class DataEnums
     {
-        public VideoFile(string path) : base(path)
+        public enum PlaylistType
         {
+            Audio = 1,
+            Video = 2
         }
     }
 }

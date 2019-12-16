@@ -24,12 +24,16 @@ namespace MediaOrganiser.Data
         public List<AudioFile> AudioFiles;
         public List<VideoFile> VideoFiles;
 
-        //public List<Playlist> Playlists; // needs playlist model implementation
+        public List<Playlist<AudioFile>> AudioPlaylists;
+        public List<Playlist<VideoFile>> VideoPlaylists;
 
         private DataStore()
         {
             AudioFiles = new List<AudioFile>();
             VideoFiles = new List<VideoFile>();
+
+            AudioPlaylists = new List<Playlist<AudioFile>>();
+            VideoPlaylists = new List<Playlist<VideoFile>>();
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,36 @@ namespace MediaOrganiser.Data
         public List<AudioFile> SelectAllAudioFiles()
         {
             return DataStore.Instance.AudioFiles;
+        }
+
+        public AudioFile SelectAudioFileByPath(string path)
+        {
+            return DataStore.Instance.AudioFiles.Single(x => x.Path == path);
+        }
+
+        public VideoFile SelectVideoFileByPath(string path)
+        {
+            return DataStore.Instance.VideoFiles.Single(x => x.Path == path);
+        }
+
+        public void AddAudioPlaylist(Playlist<AudioFile> playlist)
+        {
+            DataStore.Instance.AudioPlaylists.Add(playlist);
+        }
+
+        public void AddVideoPlaylist(Playlist<VideoFile> playlist)
+        {
+            DataStore.Instance.VideoPlaylists.Add(playlist);
+        }
+
+        public List<Playlist<AudioFile>> SelectAllAudioPlaylists()
+        {
+            return DataStore.Instance.AudioPlaylists;
+        }
+
+        public List<Playlist<VideoFile>> SelectAllVideoPlaylists()
+        {
+            return DataStore.Instance.VideoPlaylists;
         }
     }
 }
