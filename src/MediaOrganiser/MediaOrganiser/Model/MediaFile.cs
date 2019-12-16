@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using File = TagLib.File;
+using TagLib;
 
 namespace MediaOrganiser.Model
 {
     public abstract class MediaFile
     {
-        protected readonly TagLib.File _tagFile;
+        protected readonly File _tagFile;
 
         protected MediaFile(string path)
         {
@@ -18,7 +14,7 @@ namespace MediaOrganiser.Model
 
             _tagFile = File.Create(path);
 
-            Length = _tagFile.Length;
+            Length = _tagFile.Properties.Duration;
         }
 
         private string _path;
@@ -29,9 +25,9 @@ namespace MediaOrganiser.Model
             set { _path = value; }
         }
 
-        private long _length;
+        private TimeSpan _length;
 
-        public long Length
+        public TimeSpan Length
         {
             get { return _length; }
             set { _length = value; }

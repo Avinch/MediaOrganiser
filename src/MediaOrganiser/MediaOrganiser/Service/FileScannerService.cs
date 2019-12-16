@@ -9,7 +9,7 @@ namespace MediaOrganiser.Service
 {
     public class FileScannerService
     {
-        private DataRepository _repo;
+        private readonly DataRepository _repo;
 
         public FileScannerService()
         {
