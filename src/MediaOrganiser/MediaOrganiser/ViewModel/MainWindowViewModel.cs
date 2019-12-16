@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using MediaOrganiser.Messages;
@@ -10,10 +12,10 @@ using MediaOrganiser.Service;
 
 namespace MediaOrganiser.ViewModel
 {
-    class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseViewModel
     {
 
-        public ICommand StartScanCommand;
+        public ICommand StartScanCommand { get; set; }
         private readonly FileScannerService _scannerService;
 
         public MainWindowViewModel()
@@ -23,7 +25,12 @@ namespace MediaOrganiser.ViewModel
 
             MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived);
 
-            StartScan();
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                StartScan();
+            }
+            
+            ScanInProgress = false;
         }
 
         private bool _scanInProgress;
@@ -39,10 +46,10 @@ namespace MediaOrganiser.ViewModel
             ScanInProgress = false;
         }
 
-        private void StartScan()
+        private async void StartScan()
         {
             ScanInProgress = true;
-            _scannerService.StartScan();
+            await _scannerService.StartScan();
         }
     }
 }

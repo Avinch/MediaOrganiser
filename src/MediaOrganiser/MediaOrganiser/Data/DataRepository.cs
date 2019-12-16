@@ -18,7 +18,11 @@ namespace MediaOrganiser.Data
 
         public List<string> SelectAllLibraries()
         {
-            return DataStore.Instance.Configuration.Libraries;
+            //return DataStore.Instance.Configuration.Libraries;
+
+            // TODO: TEMP
+            var temp = new List<string>(){@"C:\LIB"};
+            return temp;
         }
 
         public void AddLibrary(string libraryPath)

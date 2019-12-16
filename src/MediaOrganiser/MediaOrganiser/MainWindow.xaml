@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediaOrganiser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Media Organiser" Height="450" Width="800"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        xmlns:vm="clr-namespace:MediaOrganiser.ViewModel"
+        xmlns:view="clr-namespace:MediaOrganiser.View">
+
+<Window.DataContext><vm:MainWindowViewModel  /></Window.DataContext>
+
+    <ui:SimpleStackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Button Margin="5" Command="{Binding Path=StartScanCommand}">Scan files</Button>
+        </StackPanel>
+        <ProgressBar Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}"></ProgressBar>
+        <TabControl>
+            <TabItem Header="Audio">
+                <view:AudioView></view:AudioView>
+            </TabItem>
+            <TabItem Header="Video"><Label>
+                TODO: Video Tab
+            </Label></TabItem>
+            <TabItem Header="Settings">
+                <Label>TODO: Settings Tab</Label>
+            </TabItem>
+        </TabControl>
+
+    </ui:SimpleStackPanel>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using MediaOrganiser.Data;
 using MediaOrganiser.Extensions;
 using MediaOrganiser.Messages;
@@ -15,7 +16,7 @@ namespace MediaOrganiser.Service
             _repo = new DataRepository();
         }
 
-        public void StartScan()
+        public async Task StartScan()
         {
             var librariesToScan = _repo.SelectAllLibraries();
 
@@ -25,12 +26,12 @@ namespace MediaOrganiser.Service
 
                 foreach (var path in allFiles.Where(x => x.PathIsAudioFile()))
                 {
-                    _repo.AddAudioFile(path);
+                    await Task.Run(() => _repo.AddAudioFile(path));
                 }
 
                 foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
                 {
-                    _repo.AddVideoFile(path);
+                    await Task.Run(() => _repo.AddVideoFile(path));
                 }
             }
 
