@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaOrganiser.Model
 {
-    class Category
+    public class Category
     {
         public Category(int id, string name)
         {

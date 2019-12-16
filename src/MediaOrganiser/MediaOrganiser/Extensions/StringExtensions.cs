@@ -8,8 +8,8 @@ namespace MediaOrganiser.Extensions
 {
     public static class StringExtensions
     {
-        private static string[] AudioFileExtensions = {"mp3", "flac"};
-        private static string[] VideoFileExtensions = { "mp4", "movs" };
+        private static readonly string[] AudioFileExtensions = {"mp3", "flac"};
+        private static readonly string[] VideoFileExtensions = {"mp4", "mov" };
 
         public static bool PathIsAudioFile(this string path)
         {

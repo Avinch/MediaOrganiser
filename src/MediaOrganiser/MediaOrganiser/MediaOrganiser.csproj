@@ -96,7 +96,9 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\FileScannerService.cs" />
     <Compile Include="Service\MessengerService.cs" />
+    <Compile Include="ViewModel\AudioViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

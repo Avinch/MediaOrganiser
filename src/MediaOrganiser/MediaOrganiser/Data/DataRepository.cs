@@ -50,5 +50,10 @@ namespace MediaOrganiser.Data
 
             DataStore.Instance.VideoFiles.Add(file);
         }
+
+        public List<AudioFile> SelectAllAudioFiles()
+        {
+            return DataStore.Instance.AudioFiles;
+        }
     }
 }

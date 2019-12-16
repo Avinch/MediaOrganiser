@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediaOrganiser.Data;
 using MediaOrganiser.Extensions;
 using MediaOrganiser.Messages;
 
 namespace MediaOrganiser.Service
 {
-    class FileScannerService
+    public class FileScannerService
     {
         private DataRepository _repo;
 

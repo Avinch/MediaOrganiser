@@ -4,7 +4,7 @@ using MediaOrganiser.Annotations;
 
 namespace MediaOrganiser.ViewModel
 {
-    class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

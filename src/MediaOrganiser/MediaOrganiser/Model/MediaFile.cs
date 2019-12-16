@@ -8,7 +8,7 @@ using File = TagLib.File;
 
 namespace MediaOrganiser.Model
 {
-    abstract class MediaFile
+    public abstract class MediaFile
     {
         protected readonly TagLib.File _tagFile;
 

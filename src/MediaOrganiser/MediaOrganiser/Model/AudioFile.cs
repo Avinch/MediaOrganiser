@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaOrganiser.Model
 {
-    class AudioFile : MediaFile
+    public class AudioFile : MediaFile
     {
         public AudioFile(string path) : base(path)
         {
