@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MediaOrganiser.Service;
 
 namespace MediaOrganiser
 {
@@ -20,8 +21,19 @@ namespace MediaOrganiser
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private PlaylistService _playlistService;
+        private FileScannerService _fileScanService;
+
         public MainWindow()
         {
+            _playlistService = new PlaylistService();
+            _fileScanService = new FileScannerService();
+
+            //_fileScanService.StartScan();
+
+            //_playlistService.LoadPlaylistsIntoMemory();
+
             InitializeComponent();
         }
     }

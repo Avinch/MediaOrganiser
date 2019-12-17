@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediaOrganiser.Data;
 using MediaOrganiser.Extensions;
 using MediaOrganiser.Messages;
+using MediaOrganiser.Model;
 
 namespace MediaOrganiser.Service
 {
@@ -28,7 +29,7 @@ namespace MediaOrganiser.Service
 
                 foreach (var path in allFiles.Where(x => x.PathIsAudioFile()))
                 {
-                    await Task.Run(() => _repo.AddAudioFile(path));
+                    await Task.Run(() =>_repo.AddAudioFile(path));
                 }
 
                 foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
@@ -37,7 +38,12 @@ namespace MediaOrganiser.Service
                 }
             }
 
-            MessengerService.Default.Send(new FileScanCompleteMessage());
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);
+
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateVideoFiles);
+
+
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.FileScanComplete);
         }
     }
 }

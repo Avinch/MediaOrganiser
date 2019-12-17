@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using MediaOrganiser.Data;
 using MediaOrganiser.Messages;
@@ -15,20 +16,39 @@ namespace MediaOrganiser.ViewModel
         {
             _repo = new DataRepository();
 
-            MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived);
-            MessengerService.Default.Register<FileScanStartedMessage>(this, ScanStartedReceieved); // not working - messengerservice is refusing it for some reason
+            MessengerService.Default.Register<PlaylistsLoadedMessage>(this, PlaylistsLoadedReceived, MessageContexts.PopulateAudioPlaylists);
 
-            Files = new ObservableCollection<AudioFile>();
+            MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived, MessageContexts.PopulateAudioFiles);
 
+            ShownFiles = new BindingList<AudioFile>();
+
+            AvailablePlaylists = new List<Playlist<AudioFile>>();
+            AllFilesPlaylist = new Playlist<AudioFile>(999, "All", showPrefix: false);
+
+            ReloadPlaylists();
+
+            
             CountText = "None";
             DetailsPanelVisible = Visibility.Collapsed;
         }
 
-        private ObservableCollection<AudioFile> _files;
-        public ObservableCollection<AudioFile> Files
+        private void PlaylistsLoadedReceived(PlaylistsLoadedMessage obj)
         {
-            get { return _files; }
-            set { _files = value; OnPropertyChanged(); }
+            ReloadPlaylists();
+        }
+
+        private void ReloadPlaylists()
+        {
+            AvailablePlaylists.Clear();
+            AvailablePlaylists.Add(AllFilesPlaylist);
+            AvailablePlaylists.AddRange(_repo.SelectAllAudioPlaylists());
+        }
+
+        private BindingList<AudioFile> _shownFiles;
+        public BindingList<AudioFile> ShownFiles
+        {
+            get { return _shownFiles; }
+            set { _shownFiles = value; OnPropertyChanged(); }
         }
 
         private AudioFile _selectedFile;
@@ -36,6 +56,38 @@ namespace MediaOrganiser.ViewModel
         {
             get { return _selectedFile; }
             set { _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility();}
+        }
+
+        private List<Playlist<AudioFile>> _availablePlaylists;
+        public List<Playlist<AudioFile>> AvailablePlaylists
+        {
+            get { return _availablePlaylists; }
+            set { _availablePlaylists = value; OnPropertyChanged(); }
+        }
+
+        private Playlist<AudioFile> _selectedPlaylist;
+        public Playlist<AudioFile> SelectedPlaylist
+        {
+            get { return _selectedPlaylist; }
+            set { _selectedPlaylist = value; OnPropertyChanged();
+                SetItemsBasedOnView();
+            }
+        }
+
+        private Playlist<AudioFile> _allFilesPlaylist;
+
+        public Playlist<AudioFile> AllFilesPlaylist
+        {
+            get { return _allFilesPlaylist; }
+            set { _allFilesPlaylist = value; OnPropertyChanged(); }
+        }
+
+        private void SetItemsBasedOnView()
+        {
+            if (SelectedPlaylist != null)
+            {
+                ReloadFiles(SelectedPlaylist.Items);
+            }
         }
 
         private Visibility _detailsPanelVisible;
@@ -66,28 +118,23 @@ namespace MediaOrganiser.ViewModel
             set { _countText = value; OnPropertyChanged();}
         }
 
-        private void ScanStartedReceieved(FileScanStartedMessage obj)
-        {
-            Files.Clear();
-        }
-
         private void ScanCompleteReceived(FileScanCompleteMessage obj)
         {
-            ReloadFiles();
+            SelectedPlaylist = null;
+            AllFilesPlaylist.Items = _repo.SelectAllAudioFiles();
+            SelectedPlaylist = AllFilesPlaylist;
         }
 
-        private void ReloadFiles()
+        private void ReloadFiles(List<AudioFile> files)
         {
-            Files.Clear();
+            ShownFiles.Clear();
 
-            var results = _repo.SelectAllAudioFiles();
-
-            foreach (var result in results)
+            foreach (var result in files)
             {
-                Files.Add(result);
+                ShownFiles.Add(result);
             }
 
-            CountText = $"Count: {Files.Count}";
+            CountText = $"Count: {ShownFiles.Count}";
         }
     }
 }

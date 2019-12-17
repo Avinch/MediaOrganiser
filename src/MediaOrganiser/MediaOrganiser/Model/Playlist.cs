@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media.Animation;
 
 namespace MediaOrganiser.Model
 {
     public class Playlist<T> where T : MediaFile
     {
-        public Playlist(int id, string name)
+        public Playlist(int id, string name, bool showPrefix = true)
         {
             Id = id;
             Name = name;
+            ShowPrefix = showPrefix;
 
             Items = new List<T>();
 
@@ -52,6 +54,18 @@ namespace MediaOrganiser.Model
         {
             get { return _items; }
             set { _items = value; }
+        }
+
+        public bool ShowPrefix { get; set; }
+
+        public override string ToString()
+        {
+            if (ShowPrefix)
+            {
+                return $"Playlist: {Name}";
+            }
+
+            return Name;
         }
     }
 }

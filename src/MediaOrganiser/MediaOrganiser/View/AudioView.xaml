@@ -13,12 +13,13 @@
 
     <DockPanel LastChildFill="True">
         <Label DockPanel.Dock="Bottom" Margin="5" Content="{Binding CountText}"></Label>
+        <ListView DockPanel.Dock="Left" ItemsSource="{Binding AvailablePlaylists}" SelectedItem="{Binding Path=SelectedPlaylist, Mode=TwoWay}"></ListView>
         <StackPanel Width="250" Visibility="{Binding DetailsPanelVisible}" DockPanel.Dock="Right">
             <Label Content="{Binding SelectedFile.Title}"></Label>
             <Label Content="{Binding SelectedFile.Artist}"></Label>
             <Label Content="{Binding SelectedFile.Album}"></Label>
         </StackPanel>
-        <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding Files}" AutoGenerateColumns="False">
+        <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding ShownFiles}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Binding="{Binding Title}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Length" Binding="{Binding Length}"></DataGridTextColumn>

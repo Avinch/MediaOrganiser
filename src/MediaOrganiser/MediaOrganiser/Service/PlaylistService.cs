@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediaOrganiser.Data;
+using MediaOrganiser.Messages;
 using MediaOrganiser.Model;
 using Newtonsoft.Json;
 
@@ -20,10 +22,15 @@ namespace MediaOrganiser.Service
 
         public void LoadPlaylistsIntoMemory()
         {
-            // todo: check if file exists
+            if (!File.Exists(SettingsService.Instance.GetPlaylistFilePath()))
+            {
+                return;
+            }
+
+            var serialized = File.ReadAllText(SettingsService.Instance.GetPlaylistFilePath());
 
             var playlistDtos =
-                JsonConvert.DeserializeObject<List<PlaylistDto>>(SettingsService.Instance.GetPlaylistFilePath());
+                JsonConvert.DeserializeObject<List<PlaylistDto>>(serialized);
 
             foreach (var dto in playlistDtos)
             {
@@ -46,8 +53,14 @@ namespace MediaOrganiser.Service
                     {
                         playlist.Items.Add(_repo.SelectVideoFileByPath(path));
                     }
+                    _repo.AddVideoPlaylist(playlist);
                 }
             }
+
+            MessengerService.Default.Send(new PlaylistsLoadedMessage(), MessageContexts.PopulateAudioPlaylists);
+
+
+            MessengerService.Default.Send(new PlaylistsLoadedMessage(), MessageContexts.PopulateVideoPlaylists);
         }
 
         public void SavePlaylistsToFile()
@@ -82,7 +95,14 @@ namespace MediaOrganiser.Service
 
             var serializedDtos = JsonConvert.SerializeObject(allDtos);
 
-            // todo: save that to a file
+            if (!Directory.Exists(SettingsService.Instance.GetSettingsFolder()))
+            {
+                Directory.CreateDirectory(SettingsService.Instance.GetSettingsFolder());
+            }
+
+            File.WriteAllText(SettingsService.Instance.GetPlaylistFilePath(), serializedDtos);
+
+            // todo: check if file in use already
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using MediaOrganiser.Service;
 
 namespace MediaOrganiser
 {
@@ -13,5 +14,16 @@ namespace MediaOrganiser
     /// </summary>
     public partial class App : Application
     {
+        private PlaylistService _playlistService;
+
+        public App()
+        {
+            _playlistService = new PlaylistService();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            _playlistService.SavePlaylistsToFile();
+        }
     }
 }

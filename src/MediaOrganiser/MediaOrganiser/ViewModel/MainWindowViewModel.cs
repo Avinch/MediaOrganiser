@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -12,20 +13,18 @@ namespace MediaOrganiser.ViewModel
 
         public ICommand StartScanCommand { get; set; }
         private readonly FileScannerService _scannerService;
+        private readonly PlaylistService _playlistService;
 
         public MainWindowViewModel()
         {
             StartScanCommand = new RelayCommand(StartScan);
             _scannerService = new FileScannerService();
+            _playlistService = new PlaylistService();
 
             MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived);
 
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                StartScan();
-            }
-            
             ScanInProgress = false;
+            Start();
         }
 
         private bool _scanInProgress;
@@ -45,6 +44,12 @@ namespace MediaOrganiser.ViewModel
         {
             ScanInProgress = true;
             await _scannerService.StartScan();
+        }
+
+        private async void Start()
+        {
+             _scannerService.StartScan();
+            _playlistService.LoadPlaylistsIntoMemory();
         }
     }
 }
