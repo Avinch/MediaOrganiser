@@ -12,26 +12,56 @@
     <Control.DataContext><vm:AudioViewModel /></Control.DataContext>
 
     <DockPanel LastChildFill="True">
+
+        <!-- Status bar -->
         <Label DockPanel.Dock="Bottom" Margin="5" Content="{Binding CountText}"></Label>
 
-
-        <ui:SimpleStackPanel DockPanel.Dock="Left">
+        <!-- View selector -->
+        <ui:SimpleStackPanel Width="200" DockPanel.Dock="Left">
             <Button Margin="10" Command="{Binding Path=AddPlaylistCommand}">Create Playlist</Button>
             <ListView ItemsSource="{Binding AvailablePlaylists}" SelectedItem="{Binding Path=SelectedPlaylist, Mode=TwoWay}"></ListView>
         </ui:SimpleStackPanel>
-        <StackPanel Width="250" Visibility="{Binding DetailsPanelVisible}" DockPanel.Dock="Right">
-            <Label Content="{Binding SelectedFile.Title}"></Label>
-            <Label Content="{Binding SelectedFile.Artist}"></Label>
-            <Label Content="{Binding SelectedFile.Album}"></Label>
+
+        <!-- Details panel -->
+        <StackPanel Margin="20" Width="250" Visibility="{Binding FileDetailsPanelVisible}" DockPanel.Dock="Right">
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Title}" FontWeight="Bold"></TextBlock>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Artist}"></TextBlock>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Album}" Margin="0,5,0,0"></TextBlock>
+
+            <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton">
+            </ui:DropDownButton>
         </StackPanel>
-        <DataGrid SelectionMode="Single" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding ShownFiles}" AutoGenerateColumns="False">
+
+        <!-- Playlist details -->
+        <!--<StackPanel DockPanel.Dock="Top" Visibility="{Binding PlaylistDetailsVisible}" Orientation="Horizontal">
+            <TextBox  Margin="5" Text="{Binding SelectedPlaylist.Name}"></TextBox>
+            <TextBox Margin="5" Text="{Binding SelectedPlaylist.Description}"></TextBox>
+        </StackPanel>-->
+
+        <Grid DockPanel.Dock="Top" Visibility="{Binding PlaylistDetailsVisible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Column="0" Margin="5" VerticalAlignment="Center">Playlist Name</Label>
+            <TextBox Grid.Column="1" Margin="5" Text="{Binding SelectedPlaylist.Name}"></TextBox>
+            
+            <Label Grid.Column="2" Margin="5" VerticalAlignment="Center">Description</Label>
+            <TextBox Grid.Column="3" Margin="5" Text="{Binding SelectedPlaylist.Description}"></TextBox>
+        </Grid>
+
+        <!-- Main grid -->
+        <DataGrid SelectionMode="Single" IsReadOnly="True" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding ShownFiles}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Binding="{Binding Title}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Length" Binding="{Binding Length}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Length" Binding="{Binding FormattedLength}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Artist" Binding="{Binding Artist}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Album" Binding="{Binding Album}"></DataGridTextColumn>
             </DataGrid.Columns>
-            </DataGrid>
+        </DataGrid>
     </DockPanel>
 
 </UserControl>

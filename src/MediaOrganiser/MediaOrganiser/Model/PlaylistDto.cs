@@ -12,5 +12,6 @@ namespace MediaOrganiser.Model
         public int TypeId { get; set; }
         public string Name { get; set; }
         public List<string> FilePaths { get; set; }
+        public string Description { get; set; }
     }
 }

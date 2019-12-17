@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediaOrganiser"
         mc:Ignorable="d"
-        Title="Media Organiser" Height="450" Width="800"
+        Title="Media Organiser" Height="682.2" Width="1174.4"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:vm="clr-namespace:MediaOrganiser.ViewModel"
         xmlns:view="clr-namespace:MediaOrganiser.View">
 
-<Window.DataContext><vm:MainWindowViewModel  /></Window.DataContext>
+    <Window.DataContext>
+        <vm:MainWindowViewModel  />
+    </Window.DataContext>
 
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -19,14 +21,16 @@
         </StackPanel>
 
         <ProgressBar DockPanel.Dock="Top" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />
-        
+
         <TabControl>
             <TabItem Header="Audio">
                 <view:AudioView></view:AudioView>
             </TabItem>
-            <TabItem Header="Video"><Label>
-                TODO: Video Tab
-            </Label></TabItem>
+            <TabItem Header="Video">
+                <Label>
+                    TODO: Video Tab
+                </Label>
+            </TabItem>
             <TabItem Header="Settings">
                 <Label>TODO: Settings Tab</Label>
             </TabItem>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using TagLib;
 
 namespace MediaOrganiser.Model
@@ -32,6 +33,8 @@ namespace MediaOrganiser.Model
             get { return _length; }
             set { _length = value; }
         }
+
+        public string FormattedLength => Length.ToString(@"mm\:ss");
 
         private List<Category> _categories;
 

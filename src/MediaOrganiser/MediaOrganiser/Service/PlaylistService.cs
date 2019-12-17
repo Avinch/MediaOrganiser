@@ -37,7 +37,10 @@ namespace MediaOrganiser.Service
             {
                 if ((DataEnums.PlaylistType) dto.TypeId == DataEnums.PlaylistType.Audio)
                 {
-                    var playlist = new Playlist<AudioFile>(dto.Id, dto.Name);
+                    var playlist = new Playlist<AudioFile>(dto.Id, dto.Name)
+                    {
+                        Description = dto.Description
+                    };
 
                     foreach (var path in dto.FilePaths)
                     {
@@ -48,7 +51,10 @@ namespace MediaOrganiser.Service
                 }
                 else if ((DataEnums.PlaylistType) dto.TypeId == DataEnums.PlaylistType.Video)
                 {
-                    var playlist = new Playlist<VideoFile>(dto.Id, dto.Name);
+                    var playlist = new Playlist<VideoFile>(dto.Id, dto.Name)
+                    {
+                        Description = dto.Description
+                    };
 
                     foreach (var path in dto.FilePaths)
                     {
@@ -75,7 +81,8 @@ namespace MediaOrganiser.Service
                     Id = audioPlaylist.Id,
                     Name = audioPlaylist.Name,
                     TypeId = (int)DataEnums.PlaylistType.Audio,
-                    FilePaths = audioPlaylist.Items.Select(x => x.Path).ToList()
+                    FilePaths = audioPlaylist.Items.Select(x => x.Path).ToList(),
+                    Description = audioPlaylist.Description
                 };
 
                 allDtos.Add(dto);
@@ -88,7 +95,8 @@ namespace MediaOrganiser.Service
                     Id = videoPlaylists.Id,
                     Name = videoPlaylists.Name,
                     TypeId = (int)DataEnums.PlaylistType.Video,
-                    FilePaths = videoPlaylists.Items.Select(x => x.Path).ToList()
+                    FilePaths = videoPlaylists.Items.Select(x => x.Path).ToList(),
+                    Description = videoPlaylists.Description
                 };
 
                 allDtos.Add(dto);
@@ -122,9 +130,9 @@ namespace MediaOrganiser.Service
 
         private int GetHighestPlaylistId()
         {
-            var topAudio = _repo.SelectAllAudioPlaylists().OrderBy(x => x.Id).FirstOrDefault();
+            var topAudio = _repo.SelectAllAudioPlaylists().OrderByDescending(x => x.Id).FirstOrDefault();
 
-            var topVideo = _repo.SelectAllVideoPlaylists().OrderBy(x => x.Id).FirstOrDefault();
+            var topVideo = _repo.SelectAllVideoPlaylists().OrderByDescending(x => x.Id).FirstOrDefault();
 
             if (topAudio == null && topVideo == null)
             {

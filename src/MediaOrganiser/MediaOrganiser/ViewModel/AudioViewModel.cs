@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -15,6 +18,7 @@ namespace MediaOrganiser.ViewModel
         private readonly DataRepository _repo;
         private readonly PlaylistService _playlistService;
         public ICommand AddPlaylistCommand { get; set; }
+        public ICommand AddFileToPlaylistCommand { get; set; }
 
         public AudioViewModel()
         {
@@ -26,22 +30,30 @@ namespace MediaOrganiser.ViewModel
             MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived, MessageContexts.PopulateAudioFiles);
 
             ShownFiles = new BindingList<AudioFile>();
+            ContextMenuItems = new ObservableCollection<MenuItemViewModel>();
 
             AvailablePlaylists = new BindingList<Playlist<AudioFile>>();
-            AllFilesPlaylist = new Playlist<AudioFile>(999, "All", showPrefix: false);
+            AllFilesPlaylist = new Playlist<AudioFile>((int)DataEnums.PredefinedPlaylists.AllFiles, "All", showPrefix: false);
 
             ReloadPlaylists();
 
             AddPlaylistCommand = new RelayCommand(CreateNewPlaylist);
+            AddFileToPlaylistCommand = new RelayCommand<int>(AddFileToPlaylist);
 
-            
             CountText = "None";
-            DetailsPanelVisible = Visibility.Collapsed;
+            FileDetailsPanelVisible = Visibility.Collapsed;
+        }
+
+        private void AddFileToPlaylist(int playlistId)
+        {
+            var playlistToAddTo = AvailablePlaylists.Single(x => x.Id == playlistId);
+
+            playlistToAddTo.Items.Add(SelectedFile);
         }
 
         private void CreateNewPlaylist()
         {
-            _playlistService.CreateAudioPlaylist("Wow");
+            _playlistService.CreateAudioPlaylist("Untitled playlist");
             ReloadPlaylists();
         }
 
@@ -58,6 +70,7 @@ namespace MediaOrganiser.ViewModel
             {
                 AvailablePlaylists.Add(list);
             }
+            GenerateContextMenu();
         }
 
         private BindingList<AudioFile> _shownFiles;
@@ -86,7 +99,8 @@ namespace MediaOrganiser.ViewModel
         {
             get { return _selectedPlaylist; }
             set { _selectedPlaylist = value; OnPropertyChanged();
-                SetItemsBasedOnView();
+                SelectedPlaylistChanged();
+                SetPlaylistDetailsVisibility();
             }
         }
 
@@ -98,7 +112,21 @@ namespace MediaOrganiser.ViewModel
             set { _allFilesPlaylist = value; OnPropertyChanged(); }
         }
 
-        private void SetItemsBasedOnView()
+        private ObservableCollection<MenuItemViewModel> _contextMenuItems;
+        public ObservableCollection<MenuItemViewModel> ContextMenuItems
+        {
+            get { return _contextMenuItems; }
+            set { _contextMenuItems = value; }
+        }
+
+        private Visibility _playlistDetailsVisible;
+        public Visibility PlaylistDetailsVisible
+        {
+            get { return _playlistDetailsVisible; }
+            set { _playlistDetailsVisible = value; OnPropertyChanged(); }
+        }
+
+        private void SelectedPlaylistChanged()
         {
             if (SelectedPlaylist != null)
             {
@@ -106,24 +134,35 @@ namespace MediaOrganiser.ViewModel
             }
         }
 
-        private Visibility _detailsPanelVisible;
+        private Visibility _fileDetailsPanelVisible;
 
-        public Visibility DetailsPanelVisible
+        public Visibility FileDetailsPanelVisible
         {
-            get { return _detailsPanelVisible; }
-            set { _detailsPanelVisible = value; OnPropertyChanged(); }
+            get { return _fileDetailsPanelVisible; }
+            set { _fileDetailsPanelVisible = value; OnPropertyChanged(); }
         }
 
         private void SetDetailsPanelVisibility()
         {
             if (SelectedFile != null)
             {
-                DetailsPanelVisible = Visibility.Visible;
+                FileDetailsPanelVisible = Visibility.Visible;
+                GenerateContextMenu();
             }
             else
             {
-                DetailsPanelVisible = Visibility.Collapsed;
+                FileDetailsPanelVisible = Visibility.Collapsed;
             }
+        }
+
+        private void SetPlaylistDetailsVisibility()
+        {
+            if (SelectedPlaylist == null)
+            {
+                return;
+            }
+
+            PlaylistDetailsVisible = SelectedPlaylist.Id != (int) DataEnums.PredefinedPlaylists.AllFiles ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private string _countText;
@@ -151,6 +190,25 @@ namespace MediaOrganiser.ViewModel
             }
 
             CountText = $"Count: {ShownFiles.Count}";
+        }
+
+        private void GenerateContextMenu()
+        {
+            ContextMenuItems.Clear();
+
+            foreach (var playlist in AvailablePlaylists)
+            {
+                if (playlist.Id == (int)DataEnums.PredefinedPlaylists.AllFiles) { continue;}
+
+                ContextMenuItems.Add(new MenuItemViewModel
+                {
+                    Text = playlist.Name,
+                    Command = AddFileToPlaylistCommand,
+                    BaseObject = playlist
+                });
+            }
+
+            MessengerService.Default.Send(new PlaylistContextMenuItemsGenerated(), MessageContexts.PlaylistContextMenuItemsGenerated);
         }
     }
 }

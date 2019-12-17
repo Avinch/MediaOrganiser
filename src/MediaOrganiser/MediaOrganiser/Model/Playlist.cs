@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Media.Animation;
 
 namespace MediaOrganiser.Model
 {
@@ -55,6 +54,15 @@ namespace MediaOrganiser.Model
             get { return _items; }
             set { _items = value; }
         }
+
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
 
         public bool ShowPrefix { get; set; }
 

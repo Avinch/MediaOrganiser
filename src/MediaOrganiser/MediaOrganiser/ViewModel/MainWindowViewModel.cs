@@ -21,7 +21,7 @@ namespace MediaOrganiser.ViewModel
             _scannerService = new FileScannerService();
             _playlistService = new PlaylistService();
 
-            MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived);
+            MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived, MessageContexts.FileScanComplete);
 
             ScanInProgress = false;
             Start();
@@ -43,13 +43,13 @@ namespace MediaOrganiser.ViewModel
         private async void StartScan()
         {
             ScanInProgress = true;
-            await _scannerService.StartScan();
+            await _scannerService.StartScanAsync();
         }
 
-        private async void Start()
+        private void Start()
         {
-             _scannerService.StartScan();
-            _playlistService.LoadPlaylistsIntoMemory();
+            //_scannerService.StartScan();
+            //_playlistService.LoadPlaylistsIntoMemory();
         }
     }
 }

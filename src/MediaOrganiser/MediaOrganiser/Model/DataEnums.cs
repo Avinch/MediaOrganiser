@@ -13,5 +13,10 @@ namespace MediaOrganiser.Model
             Audio = 1,
             Video = 2
         }
+
+        public enum PredefinedPlaylists
+        {
+            AllFiles = 9090
+        }
     }
 }

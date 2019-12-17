@@ -93,6 +93,7 @@
     <Compile Include="Messages\FileScanCompleteMessage.cs" />
     <Compile Include="Messages\FileScanStartedMessage.cs" />
     <Compile Include="Messages\MessageContexts.cs" />
+    <Compile Include="Messages\PlaylistContextMenuItemsGenerated.cs" />
     <Compile Include="Messages\PlaylistsLoadedMessage.cs" />
     <Compile Include="Model\AudioFile.cs" />
     <Compile Include="Model\Category.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="ViewModel\AudioViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\MenuItemViewModel.cs" />
     <Compile Include="View\AudioView.xaml.cs">
       <DependentUpon>AudioView.xaml</DependentUpon>
     </Compile>

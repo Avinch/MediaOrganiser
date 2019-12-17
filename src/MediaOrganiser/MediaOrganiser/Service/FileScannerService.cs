@@ -17,7 +17,7 @@ namespace MediaOrganiser.Service
             _repo = new DataRepository();
         }
 
-        public async Task StartScan()
+        public async Task StartScanAsync()
         {
             MessengerService.Default.Send(new FileScanStartedMessage());
 
@@ -35,6 +35,35 @@ namespace MediaOrganiser.Service
                 foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
                 {
                     await Task.Run(() => _repo.AddVideoFile(path));
+                }
+            }
+
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);
+
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateVideoFiles);
+
+
+            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.FileScanComplete);
+        }
+
+        public void StartScan()
+        {
+            MessengerService.Default.Send(new FileScanStartedMessage());
+
+            var librariesToScan = _repo.SelectAllLibraries();
+
+            foreach (var library in librariesToScan)
+            {
+                var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
+
+                foreach (var path in allFiles.Where(x => x.PathIsAudioFile()))
+                {
+                    _repo.AddAudioFile(path);
+                }
+
+                foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
+                {
+                    _repo.AddVideoFile(path);
                 }
             }
 
