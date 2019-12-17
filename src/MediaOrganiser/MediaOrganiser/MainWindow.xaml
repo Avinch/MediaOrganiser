@@ -18,6 +18,7 @@
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Button Margin="5" Command="{Binding Path=StartScanCommand}">Scan files</Button>
+            <Label Margin="3" VerticalAlignment="Center" Content="{Binding LastSyncStatus}"></Label>
         </StackPanel>
 
         <ProgressBar DockPanel.Dock="Top" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />

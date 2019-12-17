@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -12,6 +13,7 @@ namespace MediaOrganiser.ViewModel
     {
 
         public ICommand StartScanCommand { get; set; }
+        public ICommand OpenFileCommand { get; set; }
         private readonly FileScannerService _scannerService;
         private readonly PlaylistService _playlistService;
 
@@ -52,6 +54,7 @@ namespace MediaOrganiser.ViewModel
         private void ScanCompleteReceived(FileScanCompleteMessage obj)
         {
             ScanInProgress = false;
+            UpdateLastSyncStatus();
         }
 
         private async void StartScan()
@@ -61,5 +64,19 @@ namespace MediaOrganiser.ViewModel
             await _scannerService.StartScanAsync();
             _playlistService.LoadPlaylistsIntoMemory();
         }
+
+        private string _lastSyncStatus;
+
+        public string LastSyncStatus
+        {
+            get { return _lastSyncStatus; }
+            set { _lastSyncStatus = value; OnPropertyChanged(); }
+        }
+
+        private void UpdateLastSyncStatus()
+        {
+            LastSyncStatus = $"Last sync: {DateTime.Now}";
+        }
+
     }
 }

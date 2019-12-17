@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -19,6 +20,7 @@ namespace MediaOrganiser.ViewModel
         private readonly PlaylistService _playlistService;
         public ICommand AddPlaylistCommand { get; set; }
         public ICommand AddFileToPlaylistCommand { get; set; }
+        public ICommand OpenSelectedFileCommand { get; set; }
 
         public AudioViewModel()
         {
@@ -39,6 +41,7 @@ namespace MediaOrganiser.ViewModel
 
             AddPlaylistCommand = new RelayCommand(CreateNewPlaylist);
             AddFileToPlaylistCommand = new RelayCommand<int>(AddFileToPlaylist);
+            OpenSelectedFileCommand = new RelayCommand(OpenSelectedFile);
 
             CountText = "None";
             FileDetailsPanelVisible = Visibility.Collapsed;
@@ -55,6 +58,11 @@ namespace MediaOrganiser.ViewModel
         {
             _playlistService.CreateAudioPlaylist("Untitled playlist");
             ReloadPlaylists();
+        }
+
+        private void OpenSelectedFile()
+        {
+            Process.Start(SelectedFile.Path);
         }
 
         private void PlaylistsLoadedReceived(PlaylistsLoadedMessage obj)

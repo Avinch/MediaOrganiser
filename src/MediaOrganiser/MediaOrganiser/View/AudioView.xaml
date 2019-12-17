@@ -24,20 +24,18 @@
 
         <!-- Details panel -->
         <StackPanel Margin="20" Width="250" Visibility="{Binding FileDetailsPanelVisible}" DockPanel.Dock="Right">
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Content="Open" Command="{Binding OpenSelectedFileCommand}"></Button>
+                <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton" Margin="5,0,0,0"  />
+            </StackPanel>
+
             <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Title}" FontWeight="Bold"></TextBlock>
             <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Artist}"></TextBlock>
-            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Album}" Margin="0,5,0,0"></TextBlock>
-
-            <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton">
-            </ui:DropDownButton>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Album}"></TextBlock>
         </StackPanel>
 
         <!-- Playlist details -->
-        <!--<StackPanel DockPanel.Dock="Top" Visibility="{Binding PlaylistDetailsVisible}" Orientation="Horizontal">
-            <TextBox  Margin="5" Text="{Binding SelectedPlaylist.Name}"></TextBox>
-            <TextBox Margin="5" Text="{Binding SelectedPlaylist.Description}"></TextBox>
-        </StackPanel>-->
-
         <Grid DockPanel.Dock="Top" Visibility="{Binding PlaylistDetailsVisible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
