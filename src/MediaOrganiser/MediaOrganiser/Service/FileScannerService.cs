@@ -27,15 +27,9 @@ namespace MediaOrganiser.Service
             {
                 var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
 
-                foreach (var path in allFiles.Where(x => x.PathIsAudioFile()))
-                {
-                    await Task.Run(() =>_repo.AddAudioFile(path));
-                }
+                await Task.Run(() => _repo.ReplaceAllAudioFiles(allFiles.Where(x => x.PathIsAudioFile()).ToList()));
 
-                foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
-                {
-                    await Task.Run(() => _repo.AddVideoFile(path));
-                }
+                await Task.Run(() => _repo.ReplaceAllVideoFiles(allFiles.Where(x => x.PathIsVideoFile()).ToList()));
             }
 
             MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);
@@ -56,15 +50,9 @@ namespace MediaOrganiser.Service
             {
                 var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
 
-                foreach (var path in allFiles.Where(x => x.PathIsAudioFile()))
-                {
-                    _repo.AddAudioFile(path);
-                }
+                _repo.ReplaceAllAudioFiles(allFiles.Where(x => x.PathIsAudioFile()).ToList());
 
-                foreach (var path in allFiles.Where(x => x.PathIsVideoFile()))
-                {
-                    _repo.AddVideoFile(path);
-                }
+                _repo.ReplaceAllVideoFiles(allFiles.Where(x => x.PathIsVideoFile()).ToList());
             }
 
             MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);

@@ -13,6 +13,7 @@ namespace MediaOrganiser.Messages
         PopulateVideoPlaylists,
         PopulateVideoFiles,
         FileScanComplete,
-        PlaylistContextMenuItemsGenerated
+        PlaylistContextMenuItemsGenerated,
+        FileScanStarted
     }
 }

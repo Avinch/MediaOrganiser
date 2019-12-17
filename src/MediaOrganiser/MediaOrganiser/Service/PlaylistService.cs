@@ -23,6 +23,7 @@ namespace MediaOrganiser.Service
 
         public void LoadPlaylistsIntoMemory()
         {
+            _repo.ClearAllPlaylists();
             if (!File.Exists(SettingsService.Instance.GetPlaylistFilePath()))
             {
                 return;
@@ -102,7 +103,7 @@ namespace MediaOrganiser.Service
                 allDtos.Add(dto);
             }
 
-            var serializedDtos = JsonConvert.SerializeObject(allDtos);
+            var serializedDtos = JsonConvert.SerializeObject(allDtos, Formatting.Indented);
 
             if (!Directory.Exists(SettingsService.Instance.GetSettingsFolder()))
             {

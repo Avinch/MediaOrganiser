@@ -22,7 +22,7 @@
 
         <ProgressBar DockPanel.Dock="Top" Orientation="Horizontal" IsEnabled="False" IsIndeterminate="{Binding ScanInProgress}" />
 
-        <TabControl>
+        <TabControl IsEnabled="{Binding TabControlEnabled}">
             <TabItem Header="Audio">
                 <view:AudioView></view:AudioView>
             </TabItem>

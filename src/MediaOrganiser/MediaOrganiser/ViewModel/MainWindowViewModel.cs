@@ -22,18 +22,32 @@ namespace MediaOrganiser.ViewModel
             _playlistService = new PlaylistService();
 
             MessengerService.Default.Register<FileScanCompleteMessage>(this, ScanCompleteReceived, MessageContexts.FileScanComplete);
+            MessengerService.Default.Register<FileScanStartedMessage>(this, ScanStartReceived, MessageContexts.FileScanStarted);
 
             ScanInProgress = false;
-            Start();
+        }
+
+        private void ScanStartReceived(FileScanStartedMessage obj)
+        {
+            ScanInProgress = true;
+        }
+
+        private bool _tabControlEnabled;
+
+        public bool TabControlEnabled
+        {
+            get { return _tabControlEnabled; }
+            set { _tabControlEnabled = value; OnPropertyChanged(); }
         }
 
         private bool _scanInProgress;
         public bool ScanInProgress
         {
             get { return _scanInProgress; }
-            set { _scanInProgress = value; OnPropertyChanged(); }
+            set { _scanInProgress = value; OnPropertyChanged();
+                TabControlEnabled = !_scanInProgress;
+            }
         }
-
 
         private void ScanCompleteReceived(FileScanCompleteMessage obj)
         {
@@ -43,13 +57,9 @@ namespace MediaOrganiser.ViewModel
         private async void StartScan()
         {
             ScanInProgress = true;
+            _playlistService.SavePlaylistsToFile();
             await _scannerService.StartScanAsync();
-        }
-
-        private void Start()
-        {
-            //_scannerService.StartScan();
-            //_playlistService.LoadPlaylistsIntoMemory();
+            _playlistService.LoadPlaylistsIntoMemory();
         }
     }
 }

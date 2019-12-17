@@ -56,6 +56,28 @@ namespace MediaOrganiser.Data
             DataStore.Instance.VideoFiles.Add(file);
         }
 
+        public void ReplaceAllAudioFiles(List<string> paths)
+        {
+            DataStore.Instance.AudioFiles.Clear();
+            foreach (var path in paths)
+            {
+                var file = new AudioFile(path);
+
+                DataStore.Instance.AudioFiles.Add(file);
+            }
+        }
+
+        public void ReplaceAllVideoFiles(List<string> paths)
+        {
+            DataStore.Instance.VideoFiles.Clear();
+            foreach (var path in paths)
+            {
+                var file = new VideoFile(path);
+
+                DataStore.Instance.VideoFiles.Add(file);
+            }
+        }
+
         public List<AudioFile> SelectAllAudioFiles()
         {
             return DataStore.Instance.AudioFiles;
@@ -89,6 +111,12 @@ namespace MediaOrganiser.Data
         public List<Playlist<VideoFile>> SelectAllVideoPlaylists()
         {
             return DataStore.Instance.VideoPlaylists;
+        }
+
+        public void ClearAllPlaylists()
+        {
+            DataStore.Instance.VideoPlaylists.Clear();
+            DataStore.Instance.AudioPlaylists.Clear();
         }
     }
 }
