@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MediaOrganiser.Data;
 using MediaOrganiser.Messages;
 using MediaOrganiser.Model;
@@ -103,6 +104,45 @@ namespace MediaOrganiser.Service
             File.WriteAllText(SettingsService.Instance.GetPlaylistFilePath(), serializedDtos);
 
             // todo: check if file in use already
+        }
+
+        public void CreateAudioPlaylist(string name)
+        {
+            var nextId = GetHighestPlaylistId() + 1;
+            var playlist = new Playlist<AudioFile>(nextId, name);
+            _repo.AddAudioPlaylist(playlist);
+        }
+
+        public void CreateVideoPlaylist(string name)
+        {
+            var nextId = GetHighestPlaylistId() + 1;
+            var playlist = new Playlist<VideoFile>(nextId, name);
+            _repo.AddVideoPlaylist(playlist);
+        }
+
+        private int GetHighestPlaylistId()
+        {
+            var topAudio = _repo.SelectAllAudioPlaylists().OrderBy(x => x.Id).FirstOrDefault();
+
+            var topVideo = _repo.SelectAllVideoPlaylists().OrderBy(x => x.Id).FirstOrDefault();
+
+            if (topAudio == null && topVideo == null)
+            {
+                return 1;
+            }
+            else if (topAudio == null)
+            {
+                return topVideo.Id;
+            }
+            else if (topVideo == null)
+            {
+                return topAudio.Id;
+            }
+            else
+            {
+                return Math.Max(topVideo.Id, topAudio.Id);
+            }
+
         }
     }
 }

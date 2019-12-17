@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using MediaOrganiser.Data;
 using MediaOrganiser.Messages;
 using MediaOrganiser.Model;
@@ -11,10 +13,13 @@ namespace MediaOrganiser.ViewModel
     public class AudioViewModel : BaseViewModel
     {
         private readonly DataRepository _repo;
+        private readonly PlaylistService _playlistService;
+        public ICommand AddPlaylistCommand { get; set; }
 
         public AudioViewModel()
         {
             _repo = new DataRepository();
+            _playlistService = new PlaylistService();
 
             MessengerService.Default.Register<PlaylistsLoadedMessage>(this, PlaylistsLoadedReceived, MessageContexts.PopulateAudioPlaylists);
 
@@ -22,14 +27,22 @@ namespace MediaOrganiser.ViewModel
 
             ShownFiles = new BindingList<AudioFile>();
 
-            AvailablePlaylists = new List<Playlist<AudioFile>>();
+            AvailablePlaylists = new BindingList<Playlist<AudioFile>>();
             AllFilesPlaylist = new Playlist<AudioFile>(999, "All", showPrefix: false);
 
             ReloadPlaylists();
 
+            AddPlaylistCommand = new RelayCommand(CreateNewPlaylist);
+
             
             CountText = "None";
             DetailsPanelVisible = Visibility.Collapsed;
+        }
+
+        private void CreateNewPlaylist()
+        {
+            _playlistService.CreateAudioPlaylist("Wow");
+            ReloadPlaylists();
         }
 
         private void PlaylistsLoadedReceived(PlaylistsLoadedMessage obj)
@@ -41,7 +54,10 @@ namespace MediaOrganiser.ViewModel
         {
             AvailablePlaylists.Clear();
             AvailablePlaylists.Add(AllFilesPlaylist);
-            AvailablePlaylists.AddRange(_repo.SelectAllAudioPlaylists());
+            foreach (var list in _repo.SelectAllAudioPlaylists())
+            {
+                AvailablePlaylists.Add(list);
+            }
         }
 
         private BindingList<AudioFile> _shownFiles;
@@ -58,8 +74,8 @@ namespace MediaOrganiser.ViewModel
             set { _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility();}
         }
 
-        private List<Playlist<AudioFile>> _availablePlaylists;
-        public List<Playlist<AudioFile>> AvailablePlaylists
+        private BindingList<Playlist<AudioFile>> _availablePlaylists;
+        public BindingList<Playlist<AudioFile>> AvailablePlaylists
         {
             get { return _availablePlaylists; }
             set { _availablePlaylists = value; OnPropertyChanged(); }
