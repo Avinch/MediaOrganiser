@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -27,6 +28,7 @@ namespace MediaOrganiser.ViewModel
         public ICommand OpenSelectedFileCommand { get; set; }
         public ICommand AddCategoryCommand { get; set; }
         public ICommand ClearCategoriesCommand { get; set; }
+        public ICommand OpenFileInExplorerCommand { get; set; }
 
         protected BaseFileViewModel()
         {
@@ -54,9 +56,23 @@ namespace MediaOrganiser.ViewModel
             OpenSelectedFileCommand = new RelayCommand(OpenSelectedFile);
             AddCategoryCommand = new RelayCommand(AddCategory);
             ClearCategoriesCommand = new RelayCommand(ClearCategories);
+            OpenFileInExplorerCommand = new RelayCommand(OpenFileInExplorer);
 
             CountText = "None";
             FileDetailsPanelVisible = Visibility.Collapsed;
+        }
+
+        private void OpenFileInExplorer()
+        {
+            if (!File.Exists(SelectedFile.Path))
+            {
+                // todo: force a sync?
+                return;
+            }
+
+            Debug.WriteLine($"/select, {SelectedFile.Path}");
+
+            Process.Start("explorer.exe", "/select, \"" + SelectedFile.Path + "\"");
         }
 
         private void CategoriesUpdatedReceived(FileCategoriesUpdatedMessage obj)
@@ -351,8 +367,6 @@ namespace MediaOrganiser.ViewModel
             get { return _addCategoryInput; }
             set { _addCategoryInput = value; OnPropertyChanged(); }
         }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

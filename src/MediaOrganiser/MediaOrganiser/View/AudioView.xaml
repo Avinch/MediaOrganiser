@@ -25,10 +25,11 @@
         <!-- Details panel -->
         <StackPanel Margin="20" Width="250" Visibility="{Binding Path=FileDetailsPanelVisible}" DockPanel.Dock="Right">
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Button Content="Open" Command="{Binding OpenSelectedFileCommand}"></Button>
-                <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton" Margin="5,0,0,0"  />
-            </StackPanel>
+            <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Content="Open" Command="{Binding OpenSelectedFileCommand}" Margin="5,5,5,5"></Button>
+                <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton" Margin="5,5,5,5"  />
+                <Button Content="Open in Explorer" Command="{Binding Path=OpenFileInExplorerCommand}" Margin="5,5,5,5"></Button>
+            </WrapPanel>
 
             <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Title}" FontWeight="Bold"></TextBlock>
             <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Artist}"></TextBlock>
