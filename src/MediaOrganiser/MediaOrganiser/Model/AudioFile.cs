@@ -38,9 +38,5 @@ namespace MediaOrganiser.Model
             get { return _album; }
             set { _album = value; }
         }
-
-
-
-
     }
 }

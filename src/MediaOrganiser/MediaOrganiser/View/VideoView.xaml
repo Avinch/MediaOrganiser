@@ -31,9 +31,10 @@
                 <ui:DropDownButton Content="Add to playlist" Name="AddToPlaylistButton" Margin="5,0,0,0"  />
             </StackPanel>
 
-            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Path}" FontWeight="Bold"></TextBlock>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Title}" FontWeight="Bold"></TextBlock>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Year}"></TextBlock>
             <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.FormattedLength}"></TextBlock>
-            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Length}"></TextBlock>
+            <TextBlock TextWrapping="WrapWithOverflow" Text="{Binding SelectedFile.Resolution}"></TextBlock>
 
 
 
@@ -80,10 +81,10 @@
         <!-- Main grid -->
         <DataGrid SelectionMode="Single" IsReadOnly="True" SelectedItem="{Binding Path=SelectedFile, Mode=TwoWay}" ItemsSource="{Binding ShownFiles}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Title" Binding="{Binding Path}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Length" Binding="{Binding FormattedLength}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Artist" Binding="{Binding Length}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Album" Binding="{Binding Length}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Year" Binding="{Binding Year}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Resolution" Binding="{Binding Resolution}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
