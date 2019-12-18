@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using MediaOrganiser.Annotations;
 using TagLib;
 
 namespace MediaOrganiser.Model
 {
-    public abstract class MediaFile
+    public abstract class MediaFile : INotifyPropertyChanged
     {
         protected readonly File TagFile;
 
@@ -15,6 +18,8 @@ namespace MediaOrganiser.Model
             TagFile = File.Create(path);
 
             Length = TagFile.Properties.Duration;
+
+            Categories = new List<string>();
         }
 
         private string _path;
@@ -40,6 +45,14 @@ namespace MediaOrganiser.Model
         {
             get { return _categories; }
             set { _categories = value; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

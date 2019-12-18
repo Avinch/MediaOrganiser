@@ -16,7 +16,8 @@ namespace MediaOrganiser.Model
 
         public enum PredefinedPlaylists
         {
-            AllFiles = 9090
+            AllFiles = 9090,
+            Category = 8080
         }
 
         public enum FileType

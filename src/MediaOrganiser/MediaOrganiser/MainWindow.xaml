@@ -9,7 +9,8 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:vm="clr-namespace:MediaOrganiser.ViewModel"
-        xmlns:view="clr-namespace:MediaOrganiser.View">
+        xmlns:view="clr-namespace:MediaOrganiser.View"
+        WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <vm:MainWindowViewModel  />

@@ -15,6 +15,7 @@ namespace MediaOrganiser.Messages
         FileScanComplete,
         PlaylistContextMenuItemsGenerated,
         FileScanStarted,
-        FileCategoriesUpdatedMessage
+        FileCategoriesUpdatedMessage,
+        PlaylistsLoaded
     }
 }
