@@ -27,5 +27,10 @@ namespace MediaOrganiser.ViewModel
         {
             return Repo.SelectAllAudioFiles();
         }
+
+        public override void CreateBasePlaylist()
+        {
+            PlaylistService.CreateAudioPlaylist("Untitled playlist");
+        }
     }
 }

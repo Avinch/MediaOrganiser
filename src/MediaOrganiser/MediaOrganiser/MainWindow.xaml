@@ -29,9 +29,7 @@
                 <view:AudioView></view:AudioView>
             </TabItem>
             <TabItem Header="Video">
-                <Label>
-                    TODO: Video Tab
-                </Label>
+                <view:VideoView />
             </TabItem>
             <TabItem Header="Settings">
                 <Label>TODO: Settings Tab</Label>

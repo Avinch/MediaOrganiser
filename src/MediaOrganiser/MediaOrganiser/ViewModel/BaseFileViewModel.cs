@@ -19,7 +19,7 @@ namespace MediaOrganiser.ViewModel
     public abstract class BaseFileViewModel<T> where T : MediaFile, INotifyPropertyChanged
     {
         protected readonly DataRepository Repo;
-        private readonly PlaylistService _playlistService;
+        protected readonly PlaylistService PlaylistService;
         private readonly CategoryService _categoryService;
 
         public ICommand AddPlaylistCommand { get; set; }
@@ -31,7 +31,7 @@ namespace MediaOrganiser.ViewModel
         protected BaseFileViewModel()
         {
             Repo = new DataRepository();
-            _playlistService = new PlaylistService();
+            PlaylistService = new PlaylistService();
             _categoryService = new CategoryService();
 
             MessengerService.Default.Register<PlaylistsLoadedMessage>(this, PlaylistsLoadedReceived, MessageContexts.PlaylistsLoaded);
@@ -98,8 +98,16 @@ namespace MediaOrganiser.ViewModel
 
         private void CreateNewPlaylist()
         {
-            _playlistService.CreateAudioPlaylist("Untitled playlist");
+            CreateBasePlaylist();
             ReloadPlaylists();
+        }
+
+        /// <summary>
+        /// Must be implemented by child object
+        /// </summary>
+        public virtual void CreateBasePlaylist()
+        {
+            throw new NotImplementedException();
         }
 
         private void OpenSelectedFile()
