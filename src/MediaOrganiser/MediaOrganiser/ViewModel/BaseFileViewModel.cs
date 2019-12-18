@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
 using MediaOrganiser.Annotations;
 using MediaOrganiser.Data;
@@ -66,7 +70,6 @@ namespace MediaOrganiser.ViewModel
         {
             if (!File.Exists(SelectedFile.Path))
             {
-                // todo: force a sync?
                 return;
             }
 
@@ -195,7 +198,7 @@ namespace MediaOrganiser.ViewModel
             get { return _selectedFile; }
             set
             {
-                _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility(); SetSelectedFileCategoriesDisplayText();
+                _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility(); SetSelectedFileCategoriesDisplayText(); SetThumbnailImage();
                 AddCategoryInput = null;
             }
         }
@@ -374,6 +377,45 @@ namespace MediaOrganiser.ViewModel
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private BitmapImage _selectedThumbnail;
+
+        public BitmapImage SelectedThumbnail
+        {
+            get { return _selectedThumbnail; }
+            set { _selectedThumbnail = value; OnPropertyChanged(); }
+        }
+
+
+        private void SetThumbnailImage()
+        {
+            if (SelectedFile == null)
+            {
+                SelectedThumbnail = null;
+                return;
+            }
+
+            var imageData = SelectedFile.GetThumbnailBytes();
+
+            if (imageData == null || imageData.Length == 0)
+            {
+                SelectedThumbnail = null;
+                return;
+            }
+            var image = new BitmapImage();
+            using (var mem = new MemoryStream(imageData))
+            {
+                mem.Position = 0;
+                image.BeginInit();
+                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = null;
+                image.StreamSource = mem;
+                image.EndInit();
+            }
+            image.Freeze();
+            SelectedThumbnail = image;
         }
     }
 }

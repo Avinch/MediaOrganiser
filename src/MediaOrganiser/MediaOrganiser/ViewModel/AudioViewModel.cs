@@ -25,7 +25,7 @@ namespace MediaOrganiser.ViewModel
 
         public override List<AudioFile> SelectAllFiles()
         {
-            return Repo.SelectAllAudioFiles();
+            return Repo.SelectAllAudioFiles().OrderBy(x => x.Title).ToList();
         }
 
         public override void CreateBasePlaylist()

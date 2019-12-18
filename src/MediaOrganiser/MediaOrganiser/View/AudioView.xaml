@@ -59,6 +59,8 @@
 
             <TextBlock TextWrapping="WrapWithOverflow" Padding="0,5,0,0" Text="{Binding SelectedFileCategories}"></TextBlock>
 
+            <Image Source="{Binding SelectedThumbnail}"></Image>
+
         </StackPanel>
 
         <!-- Playlist details -->

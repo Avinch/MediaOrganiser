@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TagLib;
 
 namespace MediaOrganiser.Model
 {
@@ -34,6 +35,11 @@ namespace MediaOrganiser.Model
         {
             get { return _resolution; }
             set { _resolution = value; }
+        }
+
+        public override byte[] GetThumbnailBytes()
+        {
+            return TagFile.Tag.Pictures.SingleOrDefault(x => x.Type == PictureType.MovieScreenCapture)?.Data.Data;
         }
 
     }

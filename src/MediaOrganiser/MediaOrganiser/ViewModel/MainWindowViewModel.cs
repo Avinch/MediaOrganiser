@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using MediaOrganiser.Messages;
@@ -13,7 +10,6 @@ namespace MediaOrganiser.ViewModel
     {
 
         public ICommand StartScanCommand { get; set; }
-        public ICommand OpenFileCommand { get; set; }
         private readonly FileScannerService _scannerService;
         private readonly PlaylistService _playlistService;
 
@@ -77,6 +73,7 @@ namespace MediaOrganiser.ViewModel
         {
             LastSyncStatus = $"Last sync: {DateTime.Now}";
         }
+
 
     }
 }

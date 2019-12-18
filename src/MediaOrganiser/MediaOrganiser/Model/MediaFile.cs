@@ -54,5 +54,14 @@ namespace MediaOrganiser.Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Must be implemented by child
+        /// </summary>
+        /// <returns></returns>
+        public virtual byte[] GetThumbnailBytes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
