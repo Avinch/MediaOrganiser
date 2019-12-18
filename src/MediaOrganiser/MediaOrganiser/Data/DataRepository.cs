@@ -17,29 +17,14 @@ namespace MediaOrganiser.Data
             DataStore.Instance.Configuration = configuration;
         }
 
-        public List<string> SelectAllLibraries()
+        public Configuration SelectConfiguration()
         {
-            //return DataStore.Instance.Configuration.Libraries;
-
-            // TODO: TEMP
-            var temp = new List<string>(){@"C:\LIB"};
-            return temp;
+            return DataStore.Instance.Configuration;
         }
 
-        public void AddLibrary(string libraryPath)
+        public string SelectLibrary()
         {
-            DataStore.Instance.Configuration.Libraries.Add(libraryPath);
-        }
-
-        public void RemoveLibrary(string libraryPath)
-        {
-            var foundLibrary = DataStore.Instance.Configuration.Libraries
-                .SingleOrDefault(x => x == libraryPath);
-
-            if (foundLibrary != null)
-            {
-                DataStore.Instance.Configuration.Libraries.Remove(foundLibrary);
-            }
+            return DataStore.Instance.Configuration.LibraryPath;
         }
 
         public void AddAudioFile(string path)
@@ -90,12 +75,12 @@ namespace MediaOrganiser.Data
 
         public AudioFile SelectAudioFileByPath(string path)
         {
-            return DataStore.Instance.AudioFiles.Single(x => x.Path == path);
+            return DataStore.Instance.AudioFiles.SingleOrDefault(x => x.Path == path);
         }
 
         public VideoFile SelectVideoFileByPath(string path)
         {
-            return DataStore.Instance.VideoFiles.Single(x => x.Path == path);
+            return DataStore.Instance.VideoFiles.SingleOrDefault(x => x.Path == path);
         }
 
         public void AddAudioPlaylist(Playlist<AudioFile> playlist)

@@ -16,17 +16,20 @@ namespace MediaOrganiser
     {
         private readonly PlaylistService _playlistService;
         private readonly CategoryService _categoryService;
+        private readonly ConfigurationService _configurationService;
 
         public App()
         {
             _playlistService = new PlaylistService();
             _categoryService = new CategoryService();
+            _configurationService = new ConfigurationService();
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             _playlistService.SavePlaylistsToFile();
             _categoryService.SaveCategoriesToFile();
+            _configurationService.SaveConfigurationToFile();
         }
     }
 }

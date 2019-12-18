@@ -108,6 +108,7 @@
     <Compile Include="Model\VideoFile.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\CategoryService.cs" />
+    <Compile Include="Service\ConfigurationService.cs" />
     <Compile Include="Service\FileScannerService.cs" />
     <Compile Include="Service\MessengerService.cs" />
     <Compile Include="Service\PlaylistService.cs" />
@@ -117,9 +118,13 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MenuItemViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\VideoViewModel.cs" />
     <Compile Include="View\AudioView.xaml.cs">
       <DependentUpon>AudioView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\VideoView.xaml.cs">
       <DependentUpon>VideoView.xaml</DependentUpon>
@@ -137,6 +142,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AudioView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -42,7 +42,11 @@ namespace MediaOrganiser.Service
 
                     foreach (var path in dto.FilePaths)
                     {
-                        playlist.Items.Add(_repo.SelectAudioFileByPath(path));
+                        var foundFile = _repo.SelectAudioFileByPath(path);
+                        if (foundFile != null)
+                        {
+                            playlist.Items.Add(foundFile);
+                        }
                     }
 
                     _repo.AddAudioPlaylist(playlist);
@@ -56,7 +60,11 @@ namespace MediaOrganiser.Service
 
                     foreach (var path in dto.FilePaths)
                     {
-                        playlist.Items.Add(_repo.SelectVideoFileByPath(path));
+                        var foundFile = _repo.SelectVideoFileByPath(path);
+                        if (foundFile != null)
+                        {
+                            playlist.Items.Add(foundFile);
+                        }
                     }
                     _repo.AddVideoPlaylist(playlist);
                 }

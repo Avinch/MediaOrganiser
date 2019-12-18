@@ -8,6 +8,7 @@ namespace MediaOrganiser.Model
 {
     public class Configuration
     {
-        public List<string> Libraries { get; set; }
+        public string LibraryPath { get; set; }
+        public bool UseDarkTheme { get; set; }
     }
 }

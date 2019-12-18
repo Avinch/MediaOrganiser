@@ -32,7 +32,7 @@
                 <view:VideoView />
             </TabItem>
             <TabItem Header="Settings">
-                <Label>TODO: Settings Tab</Label>
+                <view:SettingsView />
             </TabItem>
         </TabControl>
 

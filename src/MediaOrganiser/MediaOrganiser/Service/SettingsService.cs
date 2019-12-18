@@ -25,6 +25,7 @@ namespace MediaOrganiser.Service
 
         private const string PlaylistFileName = "playlists.json";
         private const string FilesFileName = "files.json";
+        private const string ConfigurationFileName = "configuration.json";
 
         public string GetSettingsFolder()
         {
@@ -39,6 +40,11 @@ namespace MediaOrganiser.Service
         public string GetFilesPath()
         {
             return $@"{GetSettingsFolder()}\{FilesFileName}";
+        }
+
+        public string GetConfigurationPath()
+        {
+            return $@"{GetSettingsFolder()}\{ConfigurationFileName}";
         }
     }
 }

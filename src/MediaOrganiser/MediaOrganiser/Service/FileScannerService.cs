@@ -21,21 +21,17 @@ namespace MediaOrganiser.Service
         {
             MessengerService.Default.Send(new FileScanStartedMessage());
 
-            var librariesToScan = _repo.SelectAllLibraries();
+            var library = _repo.SelectLibrary();
 
-            foreach (var library in librariesToScan)
+            if (!string.IsNullOrEmpty(library))
             {
+
                 var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
 
                 await Task.Run(() => _repo.ReplaceAllAudioFiles(allFiles.Where(x => x.PathIsAudioFile()).ToList()));
 
                 await Task.Run(() => _repo.ReplaceAllVideoFiles(allFiles.Where(x => x.PathIsVideoFile()).ToList()));
             }
-
-            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);
-
-            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateVideoFiles);
-
 
             MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.FileScanComplete);
         }
@@ -44,9 +40,9 @@ namespace MediaOrganiser.Service
         {
             MessengerService.Default.Send(new FileScanStartedMessage());
 
-            var librariesToScan = _repo.SelectAllLibraries();
+            var library = _repo.SelectLibrary();
 
-            foreach (var library in librariesToScan)
+            if (!string.IsNullOrEmpty(library))
             {
                 var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
 
@@ -54,11 +50,6 @@ namespace MediaOrganiser.Service
 
                 _repo.ReplaceAllVideoFiles(allFiles.Where(x => x.PathIsVideoFile()).ToList());
             }
-
-            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateAudioFiles);
-
-            MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.PopulateVideoFiles);
-
 
             MessengerService.Default.Send(new FileScanCompleteMessage(), MessageContexts.FileScanComplete);
         }
