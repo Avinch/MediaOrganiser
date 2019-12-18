@@ -73,7 +73,5 @@ namespace MediaOrganiser.ViewModel
         {
             LastSyncStatus = $"Last sync: {DateTime.Now}";
         }
-
-
     }
 }

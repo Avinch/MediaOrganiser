@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using MediaOrganiser.Data;
 using MediaOrganiser.Model;
 using ModernWpf;
@@ -19,7 +14,6 @@ namespace MediaOrganiser.Service
         {
             _repo = new DataRepository();
         }
-
 
         public void LoadConfigurationIntoMemory()
         {

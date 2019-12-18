@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight.Command;
 using MediaOrganiser.Annotations;
@@ -64,125 +61,6 @@ namespace MediaOrganiser.ViewModel
 
             CountText = "None";
             FileDetailsPanelVisible = Visibility.Collapsed;
-        }
-
-        private void OpenFileInExplorer()
-        {
-            if (!File.Exists(SelectedFile.Path))
-            {
-                return;
-            }
-
-            Debug.WriteLine($"/select, {SelectedFile.Path}");
-
-            Process.Start("explorer.exe", "/select, \"" + SelectedFile.Path + "\"");
-        }
-
-        private void CategoriesUpdatedReceived(FileCategoriesUpdatedMessage obj)
-        {
-            ReloadPlaylists();
-        }
-
-        private void ClearCategories()
-        {
-            SelectedFile.Categories.Clear();
-            SetSelectedFileCategoriesDisplayText();
-            SelectedPlaylist = AllFilesPlaylist;
-            ReloadPlaylists();
-        }
-
-        private void AddCategory()
-        {
-            if (AddCategoryInput == null)
-            {
-                return;
-            }
-
-            if (SelectedFile.Categories == null)
-            {
-                SelectedFile.Categories = new List<string>();
-            }
-            SelectedFile.Categories.Add(AddCategoryInput);
-            SetSelectedFileCategoriesDisplayText();
-            AddCategoryInput = null;
-            ReloadPlaylists();
-        }
-
-        private void AddFileToPlaylist(int playlistId)
-        {
-            var playlistToAddTo = AvailablePlaylists.Single(x => x.Id == playlistId);
-
-            playlistToAddTo.Items.Add(SelectedFile);
-        }
-
-        private void CreateNewPlaylist()
-        {
-            CreateBasePlaylist();
-            ReloadPlaylists();
-        }
-
-        /// <summary>
-        /// Must be implemented by child object
-        /// </summary>
-        public virtual void CreateBasePlaylist()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OpenSelectedFile()
-        {
-            Process.Start(SelectedFile.Path);
-        }
-
-        private void PlaylistsLoadedReceived(PlaylistsLoadedMessage obj)
-        {
-            ReloadPlaylists();
-        }
-
-        /// <summary>
-        /// Must be implemented by child object
-        /// </summary>
-        /// <returns></returns>
-        public virtual List<Playlist<T>> SelectAllPlaylists()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ReloadPlaylists()
-        {
-            AvailablePlaylists.Clear();
-            AvailablePlaylists.Add(AllFilesPlaylist);
-
-            foreach (var list in SelectAllPlaylists())
-            {
-                AvailablePlaylists.Add(list);
-            }
-
-            foreach (var category in GetAllUniqueAvailableCategories())
-            {
-                AvailablePlaylists.Add(
-                    new Playlist<T>(
-                        (int)DataEnums.PredefinedPlaylists.Category,
-                        $"Category: {category}", false)
-                    {
-                        Items = AllFilesPlaylist.Items.Where(x => x.Categories.Contains(category)).ToList()
-                    });
-            }
-
-            GenerateContextMenu();
-        }
-
-        private List<string> GetAllUniqueAvailableCategories()
-        {
-            var allCategories = new List<string>();
-
-            foreach (var category in AllFilesPlaylist.Items.Select(x => x.Categories))
-            {
-                if (category == null) { continue; }
-                allCategories.AddRange(category);
-            }
-
-            return allCategories.Distinct().ToList();
         }
 
         private BindingList<T> _shownFiles;
@@ -244,6 +122,42 @@ namespace MediaOrganiser.ViewModel
             set { _playlistDetailsVisible = value; OnPropertyChanged(); }
         }
 
+        private Visibility _fileDetailsPanelVisible;
+        public Visibility FileDetailsPanelVisible
+        {
+            get { return _fileDetailsPanelVisible; }
+            set { _fileDetailsPanelVisible = value; OnPropertyChanged(); }
+        }
+
+        private string _selectedFileCategories;
+        public string SelectedFileCategories
+        {
+            get { return _selectedFileCategories; }
+            set { _selectedFileCategories = value; OnPropertyChanged(); }
+        }
+
+        private string _countText;
+        public string CountText
+        {
+            get { return _countText; }
+            set { _countText = value; OnPropertyChanged(); }
+        }
+
+        private string _addCategoryInput;
+        public string AddCategoryInput
+        {
+            get { return _addCategoryInput; }
+            set { _addCategoryInput = value; OnPropertyChanged(); }
+        }
+
+        private BitmapImage _selectedThumbnail;
+
+        public BitmapImage SelectedThumbnail
+        {
+            get { return _selectedThumbnail; }
+            set { _selectedThumbnail = value; OnPropertyChanged(); }
+        }
+
         private void SelectedPlaylistChanged()
         {
             if (SelectedPlaylist != null)
@@ -252,12 +166,93 @@ namespace MediaOrganiser.ViewModel
             }
         }
 
-        private Visibility _fileDetailsPanelVisible;
-
-        public Visibility FileDetailsPanelVisible
+        private void OpenFileInExplorer()
         {
-            get { return _fileDetailsPanelVisible; }
-            set { _fileDetailsPanelVisible = value; OnPropertyChanged(); }
+            if (!File.Exists(SelectedFile.Path))
+            {
+                return;
+            }
+
+            Debug.WriteLine($"/select, {SelectedFile.Path}");
+
+            Process.Start("explorer.exe", "/select, \"" + SelectedFile.Path + "\"");
+        }
+
+        private void CategoriesUpdatedReceived(FileCategoriesUpdatedMessage obj)
+        {
+            ReloadPlaylists();
+        }
+
+        private void ClearCategories()
+        {
+            SelectedFile.Categories.Clear();
+            SetSelectedFileCategoriesDisplayText();
+            SelectedPlaylist = AllFilesPlaylist;
+            ReloadPlaylists();
+        }
+
+        private void AddCategory()
+        {
+            if (AddCategoryInput == null)
+            {
+                return;
+            }
+
+            if (SelectedFile.Categories == null)
+            {
+                SelectedFile.Categories = new List<string>();
+            }
+
+            SelectedFile.Categories.Add(AddCategoryInput);
+            SetSelectedFileCategoriesDisplayText();
+            AddCategoryInput = null;
+            ReloadPlaylists();
+        }
+
+        private void AddFileToPlaylist(int playlistId)
+        {
+            var playlistToAddTo = AvailablePlaylists.Single(x => x.Id == playlistId);
+
+            playlistToAddTo.Items.Add(SelectedFile);
+        }
+
+        private void CreateNewPlaylist()
+        {
+            CreateBasePlaylist();
+            ReloadPlaylists();
+        }
+
+        private void OpenSelectedFile()
+        {
+            Process.Start(SelectedFile.Path);
+        }
+
+        private void PlaylistsLoadedReceived(PlaylistsLoadedMessage obj)
+        {
+            ReloadPlaylists();
+        }
+        private void ReloadPlaylists()
+        {
+            AvailablePlaylists.Clear();
+            AvailablePlaylists.Add(AllFilesPlaylist);
+
+            foreach (var list in SelectAllPlaylists())
+            {
+                AvailablePlaylists.Add(list);
+            }
+
+            foreach (var category in GetAllUniqueAvailableCategories())
+            {
+                AvailablePlaylists.Add(
+                    new Playlist<T>(
+                        (int)DataEnums.PredefinedPlaylists.Category,
+                        $"Category: {category}", false)
+                    {
+                        Items = AllFilesPlaylist.Items.Where(x => x.Categories.Contains(category)).ToList()
+                    });
+            }
+
+            GenerateContextMenu();
         }
 
         private void SetDetailsPanelVisibility()
@@ -286,21 +281,17 @@ namespace MediaOrganiser.ViewModel
                     ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private string _countText;
-
-        public string CountText
+        private List<string> GetAllUniqueAvailableCategories()
         {
-            get { return _countText; }
-            set { _countText = value; OnPropertyChanged(); }
-        }
+            var allCategories = new List<string>();
 
-        /// <summary>
-        /// Must be implemented by child object
-        /// </summary>
-        /// <returns></returns>
-        public virtual List<T> SelectAllFiles()
-        {
-            throw new NotImplementedException();
+            foreach (var category in AllFilesPlaylist.Items.Select(x => x.Categories))
+            {
+                if (category == null) { continue; }
+                allCategories.AddRange(category);
+            }
+
+            return allCategories.Distinct().ToList();
         }
 
         private void ScanCompleteReceived(FileScanCompleteMessage obj)
@@ -344,13 +335,6 @@ namespace MediaOrganiser.ViewModel
             MessengerService.Default.Send(new PlaylistContextMenuItemsGenerated(), MessageContexts.PlaylistContextMenuItemsGenerated);
         }
 
-        private string _selectedFileCategories;
-
-        public string SelectedFileCategories
-        {
-            get { return _selectedFileCategories; }
-            set { _selectedFileCategories = value; OnPropertyChanged(); }
-        }
 
         private void SetSelectedFileCategoriesDisplayText()
         {
@@ -363,30 +347,6 @@ namespace MediaOrganiser.ViewModel
                 SelectedFileCategories = string.Join(", ", SelectedFile.Categories);
             }
         }
-
-        private string _addCategoryInput;
-        public string AddCategoryInput
-        {
-            get { return _addCategoryInput; }
-            set { _addCategoryInput = value; OnPropertyChanged(); }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private BitmapImage _selectedThumbnail;
-
-        public BitmapImage SelectedThumbnail
-        {
-            get { return _selectedThumbnail; }
-            set { _selectedThumbnail = value; OnPropertyChanged(); }
-        }
-
 
         private void SetThumbnailImage()
         {
@@ -416,6 +376,40 @@ namespace MediaOrganiser.ViewModel
             }
             image.Freeze();
             SelectedThumbnail = image;
+        }
+
+        /// <summary>
+        /// Must be implemented by child object
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<T> SelectAllFiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Must be implemented by child object
+        /// </summary>
+        public virtual void CreateBasePlaylist()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Must be implemented by child object
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<Playlist<T>> SelectAllPlaylists()
+        {
+            throw new NotImplementedException();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

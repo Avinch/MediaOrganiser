@@ -6,8 +6,6 @@ namespace MediaOrganiser.ViewModel
 {
     public class VideoViewModel : BaseFileViewModel<VideoFile>, INotifyPropertyChanged
     {
-        public VideoViewModel() : base() { }
-
         public override List<Playlist<VideoFile>> SelectAllPlaylists()
         {
             return Repo.SelectAllVideoPlaylists();

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediaOrganiser.Model;
 
 namespace MediaOrganiser.Data
 {
     public class DataRepository
     {
-        public DataRepository() { }
-
         public void SetConfiguration(Configuration configuration)
         {
             DataStore.Instance.Configuration = configuration;
@@ -25,20 +19,6 @@ namespace MediaOrganiser.Data
         public string SelectLibrary()
         {
             return DataStore.Instance.Configuration.LibraryPath;
-        }
-
-        public void AddAudioFile(string path)
-        {
-            var file = new AudioFile(path);
-
-            DataStore.Instance.AudioFiles.Add(file);
-        }
-
-        public void AddVideoFile(string path)
-        {
-            var file = new VideoFile(path);
-
-            DataStore.Instance.VideoFiles.Add(file);
         }
 
         public void ReplaceAllAudioFiles(List<string> paths)

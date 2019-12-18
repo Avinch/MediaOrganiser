@@ -116,8 +116,6 @@ namespace MediaOrganiser.Service
             }
 
             File.WriteAllText(SettingsService.Instance.GetPlaylistPath(), serializedDtos);
-
-            // todo: check if file in use already
         }
 
         public void CreateAudioPlaylist(string name)

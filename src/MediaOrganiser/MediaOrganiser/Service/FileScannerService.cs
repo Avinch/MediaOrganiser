@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MediaOrganiser.Data;
 using MediaOrganiser.Extensions;
 using MediaOrganiser.Messages;
-using MediaOrganiser.Model;
 
 namespace MediaOrganiser.Service
 {
@@ -25,7 +24,6 @@ namespace MediaOrganiser.Service
 
             if (!string.IsNullOrEmpty(library))
             {
-
                 var allFiles = Directory.GetFiles(library, "*.*", SearchOption.AllDirectories);
 
                 await Task.Run(() => _repo.ReplaceAllAudioFiles(allFiles.Where(x => x.PathIsAudioFile()).ToList()));
