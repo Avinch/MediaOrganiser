@@ -83,6 +83,11 @@ namespace MediaOrganiser.Data
             return DataStore.Instance.AudioFiles;
         }
 
+        public List<VideoFile> SelectAllVideoFiles()
+        {
+            return DataStore.Instance.VideoFiles;
+        }
+
         public AudioFile SelectAudioFileByPath(string path)
         {
             return DataStore.Instance.AudioFiles.Single(x => x.Path == path);

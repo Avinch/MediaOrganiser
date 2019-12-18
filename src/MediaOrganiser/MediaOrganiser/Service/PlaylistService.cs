@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using MediaOrganiser.Data;
 using MediaOrganiser.Messages;
 using MediaOrganiser.Model;
@@ -24,12 +21,12 @@ namespace MediaOrganiser.Service
         public void LoadPlaylistsIntoMemory()
         {
             _repo.ClearAllPlaylists();
-            if (!File.Exists(SettingsService.Instance.GetPlaylistFilePath()))
+            if (!File.Exists(SettingsService.Instance.GetPlaylistPath()))
             {
                 return;
             }
 
-            var serialized = File.ReadAllText(SettingsService.Instance.GetPlaylistFilePath());
+            var serialized = File.ReadAllText(SettingsService.Instance.GetPlaylistPath());
 
             var playlistDtos =
                 JsonConvert.DeserializeObject<List<PlaylistDto>>(serialized);
@@ -110,7 +107,7 @@ namespace MediaOrganiser.Service
                 Directory.CreateDirectory(SettingsService.Instance.GetSettingsFolder());
             }
 
-            File.WriteAllText(SettingsService.Instance.GetPlaylistFilePath(), serializedDtos);
+            File.WriteAllText(SettingsService.Instance.GetPlaylistPath(), serializedDtos);
 
             // todo: check if file in use already
         }

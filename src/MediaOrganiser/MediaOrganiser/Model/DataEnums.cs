@@ -18,5 +18,11 @@ namespace MediaOrganiser.Model
         {
             AllFiles = 9090
         }
+
+        public enum FileType
+        {
+            Audio = 1,
+            Video = 2
+        }
     }
 }

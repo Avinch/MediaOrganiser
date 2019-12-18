@@ -24,15 +24,21 @@ namespace MediaOrganiser.Service
         }
 
         private const string PlaylistFileName = "playlists.json";
+        private const string FilesFileName = "files.json";
 
         public string GetSettingsFolder()
         {
             return $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\MediaOrganiser";
         }
 
-        public string GetPlaylistFilePath()
+        public string GetPlaylistPath()
         {
             return $@"{GetSettingsFolder()}\{PlaylistFileName}";
+        }
+
+        public string GetFilesPath()
+        {
+            return $@"{GetSettingsFolder()}\{FilesFileName}";
         }
     }
 }

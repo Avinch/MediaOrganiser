@@ -21,6 +21,8 @@ namespace MediaOrganiser.ViewModel
         public ICommand AddPlaylistCommand { get; set; }
         public ICommand AddFileToPlaylistCommand { get; set; }
         public ICommand OpenSelectedFileCommand { get; set; }
+        public ICommand AddCategoryCommand { get; set; }
+        public ICommand ClearCategoriesCommand { get; set; }
 
         public AudioViewModel()
         {
@@ -42,9 +44,29 @@ namespace MediaOrganiser.ViewModel
             AddPlaylistCommand = new RelayCommand(CreateNewPlaylist);
             AddFileToPlaylistCommand = new RelayCommand<int>(AddFileToPlaylist);
             OpenSelectedFileCommand = new RelayCommand(OpenSelectedFile);
+            AddCategoryCommand = new RelayCommand(AddCategory);
+            ClearCategoriesCommand = new RelayCommand(ClearCategories);
 
             CountText = "None";
             FileDetailsPanelVisible = Visibility.Collapsed;
+        }
+
+        private void ClearCategories()
+        {
+            SelectedFile.Categories.Clear();
+            SetSelectedFileCategoriesDisplayText();
+        }
+
+        private void AddCategory()
+        {
+            if (AddCategoryInput == null)
+            {
+                return;
+            }
+            
+            SelectedFile.Categories.Add(AddCategoryInput);
+            SetSelectedFileCategoriesDisplayText();
+            AddCategoryInput = null;
         }
 
         private void AddFileToPlaylist(int playlistId)
@@ -92,7 +114,7 @@ namespace MediaOrganiser.ViewModel
         public AudioFile SelectedFile
         {
             get { return _selectedFile; }
-            set { _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility();}
+            set { _selectedFile = value; OnPropertyChanged(); SetDetailsPanelVisibility(); SetSelectedFileCategoriesDisplayText();}
         }
 
         private BindingList<Playlist<AudioFile>> _availablePlaylists;
@@ -218,5 +240,34 @@ namespace MediaOrganiser.ViewModel
 
             MessengerService.Default.Send(new PlaylistContextMenuItemsGenerated(), MessageContexts.PlaylistContextMenuItemsGenerated);
         }
+
+        private string _selectedFileCategories;
+
+        public string SelectedFileCategories
+        {
+            get { return _selectedFileCategories; }
+            set { _selectedFileCategories = value; OnPropertyChanged();}
+        }
+
+        private void SetSelectedFileCategoriesDisplayText()
+        {
+            if (SelectedFile.Categories == null || SelectedFile.Categories.Count == 0)
+            {
+                SelectedFileCategories = "None";
+            }
+            else
+            {
+                SelectedFileCategories = string.Join(", ", SelectedFile.Categories);
+            }
+        }
+
+        private string _addCategoryInput;
+        public string AddCategoryInput
+        {
+            get { return _addCategoryInput; }
+            set { _addCategoryInput = value; OnPropertyChanged(); }
+        }
+
+
     }
 }

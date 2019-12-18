@@ -6,15 +6,15 @@ namespace MediaOrganiser.Model
 {
     public abstract class MediaFile
     {
-        protected readonly File _tagFile;
+        protected readonly File TagFile;
 
         protected MediaFile(string path)
         {
             Path = path;
 
-            _tagFile = File.Create(path);
+            TagFile = File.Create(path);
 
-            Length = _tagFile.Properties.Duration;
+            Length = TagFile.Properties.Duration;
         }
 
         private string _path;
@@ -35,18 +35,11 @@ namespace MediaOrganiser.Model
 
         public string FormattedLength => Length.ToString(@"mm\:ss");
 
-        private List<Category> _categories;
-
-        public List<Category> Categories
+        private List<string> _categories;
+        public List<string> Categories
         {
             get { return _categories; }
             set { _categories = value; }
         }
-
-        public void AddCategory(Category category)
-        {
-            Categories.Add(category);
-        }
-
     }
 }

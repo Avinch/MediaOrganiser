@@ -10,9 +10,9 @@ namespace MediaOrganiser.Model
     {
         public AudioFile(string path) : base(path)
         {
-            Title = _tagFile.Tag.Title;
-            Artist = _tagFile.Tag.JoinedPerformers;
-            Album = _tagFile.Tag.Album;
+            Title = TagFile.Tag.Title;
+            Artist = TagFile.Tag.JoinedPerformers;
+            Album = TagFile.Tag.Album;
         }
 
         private string _title;
