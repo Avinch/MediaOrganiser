@@ -231,6 +231,7 @@ namespace MediaOrganiser.ViewModel
         {
             ReloadPlaylists();
         }
+
         private void ReloadPlaylists()
         {
             AvailablePlaylists.Clear();
