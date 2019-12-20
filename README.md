@@ -4,7 +4,7 @@ BCS Synoptic Project - Level 3 Software Development Technician
 Built using WPF with .NET Framework - 16th to 20th December 2019
 
 ## Screenshots
-![](https://raw.githubusercontent.com/Avinch/MediaOrganiser/master/docs/img/All_WithoutDetails_Light.PNG?token=AA6ACD4LKQNVSQFASBA7RGK57SSNY)
+![](https://github.com/Avinch/MediaOrganiser/blob/master/docs/img/All_WithoutDetails_Light.PNG)
 
 ![](https://github.com/Avinch/MediaOrganiser/blob/master/docs/img/Playlist_WithDetails_Dark.PNG)
 
